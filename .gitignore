@@ -1,0 +1,7 @@
+# Arquivos do VS Code
+.vscode/
+
+# Outros arquivos comuns a serem ignorados
+node_modules/
+dist/
+.env

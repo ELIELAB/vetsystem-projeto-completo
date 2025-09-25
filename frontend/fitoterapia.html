@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VetSystem - Fitoterapia</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-primary shadow-sm" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="index.html"><i class="bi bi-heart-pulse-fill"></i> VetSystem</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="index.html"><i class="bi bi-bug-fill"></i> Patologias</a></li>
+                    <li class="nav-item"><a class="nav-link" href="casos.html"><i class="bi bi-journal-text"></i> Casos do Dia a Dia</a></li>
+                    <li class="nav-item"><a class="nav-link active fw-medium" aria-current="page" href="fitoterapia.html"><i class="bi bi-flower1"></i> Fitoterapia</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main class="container">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1>Fitoterapia</h1>
+            <a href="fitoterapia-form.html" class="btn btn-primary">
+                <i class="bi bi-plus-lg"></i> Adicionar Novo
+            </a>
+        </div>
+        <form class="row g-3 mb-4 p-3 border rounded bg-light">
+            <div class="col-md-4"><label for="fitoSearchInput" class="form-label">Pesquisar por Fitoterápicos</label><input type="text" class="form-control" id="fitoSearchInput" placeholder="Digite o nome da erva..."></div>
+            <div class="col-md-4"><label for="propertyFilter" class="form-label">Filtrar por Propriedade</label><select id="propertyFilter" class="form-select"><option selected value="all">Todas as Propriedades</option></select></div>
+            <div class="col-md-4"><label for="diseaseFilter" class="form-label">Filtrar por Doença Tratada</label><select id="diseaseFilter" class="form-select"><option selected value="all">Todas as Doenças</option></select></div>
+        </form>
+        <div id="loading" class="text-center mt-5">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"><span class="visually-hidden">Carregando...</span></div>
+        </div>
+        <div id="fito-list" class="row"></div>
+    </main>
+    <div class="modal fade" id="fitoDetailsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title" id="modalTitle">Detalhes do Fitoterápico</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body" id="modalBody"></div>
+                <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button></div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="js/fitoterapia.js"></script>
+</body>
+</html>
