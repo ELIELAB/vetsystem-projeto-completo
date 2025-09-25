@@ -1,59 +1,68 @@
-// A URL base da sua API. Se mudar no futuro, você só altera aqui.
+// A URL base da sua API.
 const BASE_URL = 'http://localhost:8080';
 
 /**
- * Função auxiliar para fazer requisições GET.
+ * Função auxiliar genérica para fazer requisições.
  * @param {string} endpoint - O endpoint da API (ex: '/propriedades').
- * @returns {Promise<any>} - O JSON retornado pela API.
+ * @param {string} method - O método HTTP ('GET', 'POST', 'PUT', 'DELETE').
+ * @param {object} [data=null] - O objeto a ser enviado como JSON (opcional).
+ * @returns {Promise<any>} - O JSON retornado pela API ou undefined para respostas sem conteúdo.
  */
-async function get(endpoint) {
-    const response = await fetch(`${BASE_URL}${endpoint}`);
-    if (!response.ok) {
-        throw new Error(`Erro na requisição para ${endpoint}`);
-    }
-    return response.json();
-}
-
-/**
- * Função auxiliar para enviar dados (POST ou PUT).
- * @param {string} endpoint - O endpoint da API.
- * @param {string} method - O método HTTP ('POST' ou 'PUT').
- * @param {object} data - O objeto JavaScript a ser enviado como JSON.
- * @returns {Promise<any>} - O JSON retornado pela API.
- */
-async function send(endpoint, method, data) {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
+async function request(endpoint, method, data = null) {
+    const options = {
         method: method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    });
-    if (!response.ok) {
-        // Tenta extrair uma mensagem de erro mais detalhada do backend
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `Falha ao ${method} em ${endpoint}`);
+        headers: {}
+    };
+
+    if (data) {
+        options.headers['Content-Type'] = 'application/json';
+        options.body = JSON.stringify(data);
     }
+    
+    // Adiciona withCredentials para enviar cookies/sessão se necessário com o CORS
+    options.credentials = 'include';
+
+    const response = await fetch(`${BASE_URL}${endpoint}`, options);
+
+    // Se a resposta não for OK (status 2xx), lança um erro
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ message: `Erro ${response.status} na requisição para ${endpoint}` }));
+        throw new Error(errorData.message);
+    }
+
+    // Respostas 204 No Content não têm corpo, então não tentamos fazer o parse do JSON.
+    if (response.status === 204) {
+        return; // Retorna com sucesso, sem dados.
+    }
+
     return response.json();
 }
 
-// Criamos um objeto 'api' que exporta funções fáceis de usar.
+// Objeto 'api' que exporta funções fáceis de usar.
 export const api = {
-    // --- NOVO: Funções de Patologias ---
-    getPathologies: () => get('/patologias'),
+    // Patologias
+    getPathologies: () => request('/patologias', 'GET'),
 
-    // --- NOVO: Funções de Casos do Dia a Dia ---
-    getCases: () => get('/tratamentos/dia-a-dia'),
+    // Casos do Dia a Dia
+    getCases: () => request('/tratamentos/dia-a-dia', 'GET'),
     
-    // Funções de Fitoterapia
-    getFitos: () => get('/tratamento-fitoterapico'),
-    getFitoById: (id) => get(`/tratamento-fitoterapico/${id}`),
-    createFito: (data) => send('/tratamento-fitoterapico/cadastro', 'POST', data),
-    updateFito: (id, data) => send(`/tratamento-fitoterapico/${id}`, 'PUT', data),
+    // Fitoterapia
+    getFitos: () => request('/tratamento-fitoterapico', 'GET'),
+    getFitoById: (id) => request(`/tratamento-fitoterapico/${id}`, 'GET'),
+    createFito: (data) => request('/tratamento-fitoterapico/cadastro', 'POST', data),
+    updateFito: (id, data) => request(`/tratamento-fitoterapico/${id}`, 'PUT', data),
+    deleteFito: (id) => request(`/tratamento-fitoterapico/${id}`, 'DELETE'),
     
-    // Funções de Propriedades
-    getProperties: () => get('/propriedades'),
-    createProperty: (data) => send('/propriedades/cadastro', 'POST', data),
+    // Propriedades
+    getProperties: () => request('/propriedades', 'GET'),
+    createProperty: (data) => request('/propriedades/cadastro', 'POST', data),
+    updateProperty: (id, data) => request(`/propriedades/${id}`, 'PUT', data),
+    deleteProperty: (id) => request(`/propriedades/${id}`, 'DELETE'),
 
-    // Funções de Doenças
-    getDiseases: () => get('/doencas-tratadas'),
-    createDisease: (data) => send('/doencas-tratadas/cadastro', 'POST', data)
+    // Doenças
+    getDiseases: () => request('/doencas-tratadas', 'GET'),
+    getDiseaseById: (id) => request(`/doencas-tratadas/${id}`, 'GET'),       // <- NOVA FUNÇÃO
+    createDisease: (data) => request('/doencas-tratadas/cadastro', 'POST', data),
+    updateDisease: (id, data) => request(`/doencas-tratadas/${id}`, 'PUT', data), // <- NOVA FUNÇÃO
+    deleteDisease: (id) => request(`/doencas-tratadas/${id}`, 'DELETE')
 };
