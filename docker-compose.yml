@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  # Serviço do Backend (API Java)
+  api:
+    build: ./api
+    container_name: vetsystem-api
+    restart: always
+
+  # Serviço do Frontend (Nginx)
+  frontend:
+    build: ./frontend
+    container_name: vetsystem-frontend
+    restart: always
+    ports:
+      - "80:80" # Mapeia a porta 80 do contêiner para a porta 80 do Orange Pi
+    depends_on:
+      - api # Garante que o backend inicie antes do frontend
