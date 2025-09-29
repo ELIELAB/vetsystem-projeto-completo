@@ -38,27 +38,26 @@ document.addEventListener('DOMContentLoaded', () => {
             listContainer.innerHTML = '<p class="text-center text-muted">Nenhum fitoterápico encontrado com os filtros aplicados.</p>';
             return;
         }
+
         fitosToRender.forEach(fitoItem => {
             const card = document.createElement('div');
             card.className = 'col-md-6 col-lg-4 mb-4';
             card.innerHTML = `
-                <div class="card h-100">
-                    <div class="card-body">
+                <div class="card h-100 bg-light"> <div class="card-body">
                         <h5 class="card-title">${fitoItem.propertyName}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">${fitoItem.diseaseTreatedName}</h6>
                         <span class="badge bg-secondary">${fitoItem.popularName}</span>
                     </div>
                     <div class="card-footer bg-white d-flex justify-content-end">
                         <a href="fitoterapia-form.html?id=${fitoItem.id}" class="btn btn-sm btn-outline-secondary me-2">Editar</a>
-                        
                         <a href="#" class="btn btn-sm btn-outline-danger delete-btn me-2" data-id="${fitoItem.id}">Deletar</a>
-                        
                         <a href="#" class="btn btn-sm btn-outline-primary details-btn" data-id="${fitoItem.id}" data-bs-toggle="modal" data-bs-target="#fitoDetailsModal">Ver Detalhes</a>
                     </div>
                 </div>
             `;
             listContainer.appendChild(card);
         });
+
         setupActionButtons(); // <-- ATENÇÃO: Mudamos o nome da função
     }
 

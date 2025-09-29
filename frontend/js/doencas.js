@@ -65,7 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function createDiseaseListItem(disease) {
         const listItem = document.createElement('li');
-        listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+        listItem.className = 'list-group-item list-group-item-light d-flex justify-content-between align-items-center';
+        
         listItem.setAttribute('data-disease-id', disease.id);
         listItem.innerHTML = `
             <span class="disease-name-text">${disease.name}</span>

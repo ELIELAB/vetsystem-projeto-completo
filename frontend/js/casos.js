@@ -1,4 +1,4 @@
-import { api } from '../js/apiService.js'; // 1. IMPORTA NOSSO MÓDULO DE API
+import { api } from '../js/apiService.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     
@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const listContainer = document.getElementById('cases-list');
     const loadingSpinner = document.getElementById('loading');
     const searchInput = document.getElementById('caseSearchInput');
-    // A const BASE_URL foi removida daqui.
 
     const normalizeString = (str) => {
         if (!str) return '';
@@ -17,13 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
     async function initialize() {
         try {
             loadingSpinner.style.display = 'block';
-            
-            // 2. USA A FUNÇÃO DA API EM VEZ DO FETCH DIRETO
             const casesData = await api.getCases();
-            
             allCases = casesData; 
             renderCases(allCases);
-
         } catch (error) {
             console.error('Falha ao buscar casos:', error);
             listContainer.innerHTML = `<div class="alert alert-danger">Erro ao carregar os dados. Verifique se a API está rodando.</div>`;
@@ -31,9 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
             loadingSpinner.style.display = 'none';
         }
     }
-
-    // O resto do arquivo (renderCases, applyFilters, etc.)
-    // continua exatamente igual, pois a lógica de UI não muda.
 
     function renderCases(casesToRender) { 
         listContainer.innerHTML = ''; 
@@ -44,32 +36,29 @@ document.addEventListener('DOMContentLoaded', () => {
         casesToRender.forEach(caseItem => { 
             const card = document.createElement('div'); 
             card.className = 'col-md-6 col-lg-4 mb-4'; 
+            
             card.innerHTML = ` 
-                <div class="card h-100"> 
+                <div class="card h-100 bg-light"> 
                     <div class="card-body d-flex flex-column"> 
                         <h5 class="card-title">${caseItem.type}</h5> 
                         <p class="card-text text-muted flex-grow-1">Protocolos de tratamento e informações disponíveis.</p> 
-                        <a href="#" class="btn btn-sm btn-outline-primary details-btn mt-auto" data-id="${caseItem.id}" data-bs-toggle="modal" data-bs-target="#caseDetailsModal">Ver Detalhes</a> 
-                    </div> 
+                    </div>
+                    <div class="card-footer bg-white d-flex justify-content-end">
+                        <a href="casos-form.html?id=${caseItem.id}" class="btn btn-sm btn-outline-secondary me-2">Editar</a>
+                        <a href="#" class="btn btn-sm btn-outline-danger delete-btn me-2" data-id="${caseItem.id}">Deletar</a>
+                        <a href="#" class="btn btn-sm btn-outline-primary details-btn" data-id="${caseItem.id}" data-bs-toggle="modal" data-bs-target="#caseDetailsModal">Ver Detalhes</a> 
+                    </div>
                 </div> 
             `; 
             listContainer.appendChild(card); 
         }); 
-        setupModalButtons(); 
+        setupActionButtons();
     }
     
-    function applyFilters() { 
-        const normalizedSearchTerm = normalizeString(searchInput.value); 
-        let filteredCases = allCases; 
-        if (normalizedSearchTerm) { 
-            filteredCases = filteredCases.filter(c => normalizeString(c.type).includes(normalizedSearchTerm)); 
-        } 
-        renderCases(filteredCases); 
-    }
-    
-    function setupModalButtons() { 
+    function setupActionButtons() {
         const modalTitle = document.getElementById('modalTitle'); 
         const modalBody = document.getElementById('modalBody'); 
+        
         document.querySelectorAll('.details-btn').forEach(button => { 
             button.addEventListener('click', (event) => { 
                 const caseId = event.target.getAttribute('data-id'); 
@@ -85,7 +74,33 @@ document.addEventListener('DOMContentLoaded', () => {
                     `; 
                 } 
             }); 
-        }); 
+        });
+
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', async (event) => {
+                event.preventDefault();
+                const id = event.target.getAttribute('data-id');
+
+                if (confirm('Tem certeza que deseja deletar este caso?')) {
+                    try {
+                        await api.deleteCase(id);
+                        button.closest('.col-md-6').remove();
+                        allCases = allCases.filter(c => c.id != id);
+                    } catch (error) {
+                        alert(`Falha ao deletar o item: ${error.message}`);
+                    }
+                }
+            });
+        });
+    }
+    
+    function applyFilters() { 
+        const normalizedSearchTerm = normalizeString(searchInput.value); 
+        let filteredCases = allCases; 
+        if (normalizedSearchTerm) { 
+            filteredCases = filteredCases.filter(c => normalizeString(c.type).includes(normalizedSearchTerm)); 
+        } 
+        renderCases(filteredCases); 
     }
 
     searchInput.addEventListener('input', applyFilters);

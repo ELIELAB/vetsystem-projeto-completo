@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VetSystem - Novo Caso</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-primary shadow-sm" data-bs-theme="dark">
+        </nav>
+
+    <main class="container my-4">
+        <div class="d-flex align-items-center mb-4">
+            <a href="casos.html" class="btn btn-outline-secondary me-3"><i class="bi bi-arrow-left"></i></a>
+            <h1 id="page-title">Adicionar Novo Caso</h1>
+        </div>
+
+        <form id="case-form" class="row g-3 p-4 border rounded bg-light" novalidate>
+            <div class="col-12">
+                <label for="case-type" class="form-label">Tipo do Caso</label>
+                <input type="text" class="form-control" id="case-type" required placeholder="Ex: Otite Canina, Dermatite Alérgica...">
+            </div>
+            
+            <div class="col-12">
+                <label for="case-prescription" class="form-label">Prescrição / Protocolo</label>
+                <textarea class="form-control" id="case-prescription" rows="6" required></textarea>
+            </div>
+
+            <div class="col-12">
+                <label for="case-information" class="form-label">Informações Adicionais</label>
+                <textarea class="form-control" id="case-information" rows="4"></textarea>
+            </div>
+            
+            <div class="col-12 d-flex justify-content-end">
+                <a href="casos.html" class="btn btn-secondary me-2">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+        </form>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="js/casos-form.js"></script>
+</body>
+</html>

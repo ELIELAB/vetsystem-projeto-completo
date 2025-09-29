@@ -70,10 +70,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Cria o elemento <li> para uma propriedade
+    // Função para criar o HTML de um item da lista
     function createPropertyListItem(property) {
         const listItem = document.createElement('li');
-        listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+        // --- ALTERAÇÃO FEITA AQUI ---
+        listItem.className = 'list-group-item list-group-item-light d-flex justify-content-between align-items-center';
+        
         listItem.setAttribute('data-property-id', property.id);
         listItem.innerHTML = `
             <span class="property-name-text">${property.name}</span>
@@ -84,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         return listItem;
     }
-    
+
     // Configura TODOS os botões de ação
     function setupActionButtons() {
         // Botão "Adicionar Nova"
