@@ -1,7 +1,5 @@
-# docker-compose.yml ATUALIZADO E PRONTO PARA USAR
-
+# docker-compose.yml ATUALIZADO COM HEALTHCHECK
 services:
-  # Serviço do Backend (API Java)
   api:
     build: ./api
     container_name: vetsystem-api
@@ -9,18 +7,23 @@ services:
     volumes:
       - h2-data:/app/data
     environment:
-      - SPRING_PROFILES_ACTIVE=docker # LINHA ADICIONADA: Ativa o perfil 'docker'
+      - SPRING_PROFILES_ACTIVE=docker
+    healthcheck: # <--- SEÇÃO ADICIONADA
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
-  # Serviço do Frontend (Nginx)
   frontend:
     build: ./frontend
     container_name: vetsystem-frontend
     restart: always
     ports:
-      - "80:80" # Mapeia a porta 80 do contêiner para a porta 80 do Orange Pi
+      - "80:80"
     depends_on:
-      - api # Garante que o backend inicie antes do frontend
+      api:
+        condition: service_healthy # <--- LINHA MODIFICADA
 
-# SEÇÃO ADICIONADA: Define o volume que será usado para persistir os dados
 volumes:
   h2-data:
