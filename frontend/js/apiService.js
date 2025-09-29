@@ -1,5 +1,5 @@
 // A URL base da sua API.
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = '/api'; //rodar local com ==>> 'http://localhost:8080';
 
 /**
  * Função auxiliar genérica para fazer requisições.
