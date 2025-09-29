@@ -1,4 +1,4 @@
-version: '3.8'
+# docker-compose.yml ATUALIZADO E PRONTO PARA USAR
 
 services:
   # Serviço do Backend (API Java)
@@ -6,6 +6,10 @@ services:
     build: ./api
     container_name: vetsystem-api
     restart: always
+    volumes:
+      - h2-data:/app/data
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker # LINHA ADICIONADA: Ativa o perfil 'docker'
 
   # Serviço do Frontend (Nginx)
   frontend:
@@ -16,3 +20,7 @@ services:
       - "80:80" # Mapeia a porta 80 do contêiner para a porta 80 do Orange Pi
     depends_on:
       - api # Garante que o backend inicie antes do frontend
+
+# SEÇÃO ADICIONADA: Define o volume que será usado para persistir os dados
+volumes:
+  h2-data:
