@@ -59,4 +59,29 @@ public class GlobalExceptionHandler {
         body.put("message", ex.getMessage());
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.BAD_REQUEST.value()); // Correto: 400
+        body.put("error", "Bad Request"); // Correto: Mensagem que reflete o status 400
+        body.put("message", ex.getMessage()); // A mensagem da exceção já explica o erro específico
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST); // Correto: Retorna o status 400
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<Object> handleIllegalStateException(IllegalStateException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.BAD_REQUEST.value()); // Correto: 400
+        body.put("error", "Bad Request"); // Correto: Mensagem que reflete o status 400
+        body.put("message", ex.getMessage()); // A mensagem da exceção já explica o erro específico
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST); // Correto: Retorna o status 400
+    }
+
+
+    
 }
