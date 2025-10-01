@@ -1,4 +1,4 @@
-import { api } from '../js/apiService.js'; // 1. IMPORTA NOSSO MÓDULO DE API
+import { api } from '../services/apiService.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     

@@ -1,5 +1,5 @@
 // A URL base da sua API.
-const BASE_URL = '/api'; //rodar local com ==>> 'http://localhost:8080';
+const BASE_URL = 'http://localhost:8080';//'/api'; //rodar local com ==>> 'http://localhost:8080';
 
 /**
  * Função auxiliar genérica para fazer requisições.
@@ -83,7 +83,7 @@ export const api = {
     converterPercentual: (data) => request('/calculadora/percentual', 'POST', data),
     calcularSuperficie: (data) => request('/calculadora/superficie-corporea', 'POST', data),
 
-    // === NOVAS FUNÇÕES PARA OS PARÂMETROS ===
+    // Parâmetros
     getTabelasConversao: () => request('/conversao/tabelas', 'GET'),
     getFuncoesVitais: () => request('/parametros/funcoes-vitais', 'GET'),
     getParametrosReprodutivos: () => request('/parametros/reprodutivos', 'GET'),

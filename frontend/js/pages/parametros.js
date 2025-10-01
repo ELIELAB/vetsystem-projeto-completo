@@ -1,4 +1,4 @@
-import { api } from './apiService.js';
+import { api } from '../services/apiService.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     carregarTabelas();

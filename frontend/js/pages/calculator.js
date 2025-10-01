@@ -1,4 +1,4 @@
-import { api } from './apiService.js'; // Importa do seu ficheiro de serviço
+import { api } from '../services/apiService.js';
 
 /**
  * Nova função para formatar a dose dos comprimidos, que encontra a fração mais próxima.
