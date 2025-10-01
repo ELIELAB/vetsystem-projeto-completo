@@ -8,13 +8,13 @@ async function carregarTabelas() {
     // Adiciona um feedback de carregamento
     const funcoesVitaisCorpo = document.getElementById('tabela-funcoes-vitais-corpo');
     const reprodutivosCorpo = document.getElementById('tabela-reprodutivos-corpo');
-    const conversaoGeralCorpo = document.getElementById('tabela-conversao-geral-corpo');
-    const conversaoMedidasCorpo = document.getElementById('tabela-conversao-medidas-corpo');
+    const listaConversaoGeral = document.getElementById('lista-conversao-geral');
+    const listaConversaoMedidas = document.getElementById('lista-conversao-medidas');
 
     funcoesVitaisCorpo.innerHTML = '<tr><td colspan="4">Carregando...</td></tr>';
     reprodutivosCorpo.innerHTML = '<tr><td colspan="5">Carregando...</td></tr>';
-    conversaoGeralCorpo.innerHTML = '<tr><td colspan="2">Carregando...</td></tr>';
-    conversaoMedidasCorpo.innerHTML = '<tr><td colspan="2">Carregando...</td></tr>';
+    listaConversaoGeral.innerHTML = '<li class="list-group-item">Carregando...</li>';
+    listaConversaoMedidas.innerHTML = '<li class="list-group-item">Carregando...</li>';
 
     try {
         // Busca todos os dados em paralelo para mais performance
@@ -25,17 +25,16 @@ async function carregarTabelas() {
         ]);
 
         // Renderiza cada tabela com os dados recebidos
-        // CORREÇÃO: Acessa as propriedades com os nomes corretos vindos da API
         renderizarTabelaFuncoesVitais(funcoesData.funcoesVitais); 
         renderizarTabelaReprodutivos(reprodutivosData.parametros);
-        renderizarTabelasConversao(conversoesData.unidades, conversoesData.medidas);
+        renderizarListasConversao(conversoesData.unidades, conversoesData.medidas);
 
     } catch (error) {
         console.error("Erro ao carregar os parâmetros:", error);
         funcoesVitaisCorpo.innerHTML = '<tr><td colspan="4" class="text-danger">Erro ao carregar dados.</td></tr>';
         reprodutivosCorpo.innerHTML = '<tr><td colspan="5" class="text-danger">Erro ao carregar dados.</td></tr>';
-        conversaoGeralCorpo.innerHTML = '<tr><td colspan="2" class="text-danger">Erro ao carregar dados.</td></tr>';
-        conversaoMedidasCorpo.innerHTML = '<tr><td colspan="2" class="text-danger">Erro ao carregar dados.</td></tr>';
+        listaConversaoGeral.innerHTML = '<li class="list-group-item text-danger">Erro ao carregar dados.</li>';
+        listaConversaoMedidas.innerHTML = '<li class="list-group-item text-danger">Erro ao carregar dados.</li>';
     }
 }
 
@@ -80,25 +79,35 @@ function renderizarTabelaReprodutivos(listaDeItens) {
     });
 }
 
-function renderizarTabelasConversao(unidades, medidas) {
-    const corpoGeral = document.getElementById('tabela-conversao-geral-corpo');
-    const corpoMedidas = document.getElementById('tabela-conversao-medidas-corpo');
+function renderizarListasConversao(unidades, medidas) {
+    const listaGeral = document.getElementById('lista-conversao-geral');
+    const listaMedidas = document.getElementById('lista-conversao-medidas');
      if (!unidades || !medidas) { // Medida de segurança
-        corpoGeral.innerHTML = '<tr><td colspan="2" class="text-danger">Dados de conversão não encontrados.</td></tr>';
-        corpoMedidas.innerHTML = '<tr><td colspan="2" class="text-danger">Dados de medidas não encontrados.</td></tr>';
+        listaGeral.innerHTML = '<li class="list-group-item text-danger">Dados de conversão não encontrados.</li>';
+        listaMedidas.innerHTML = '<li class="list-group-item text-danger">Dados de medidas não encontrados.</li>';
         return;
     }
-    corpoGeral.innerHTML = '';
-    corpoMedidas.innerHTML = '';
+    listaGeral.innerHTML = '';
+    listaMedidas.innerHTML = '';
 
     unidades.forEach(item => {
-        const linha = `<tr><td>${item.de}</td><td>${item.para}</td></tr>`;
-        corpoGeral.innerHTML += linha;
+        const listItem = `
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                ${item.de}
+                <span class="badge bg-primary rounded-pill">${item.para}</span>
+            </li>
+        `;
+        listaGeral.innerHTML += listItem;
     });
 
     medidas.forEach(item => {
-        const linha = `<tr><td>${item.de}</td><td>${item.para}</td></tr>`;
-        corpoMedidas.innerHTML += linha;
+        const listItem = `
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                ${item.de}
+                <span class="badge bg-success rounded-pill">${item.para}</span>
+            </li>
+        `;
+        listaMedidas.innerHTML += listItem;
     });
 }
 
