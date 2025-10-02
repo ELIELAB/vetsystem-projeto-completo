@@ -82,10 +82,13 @@ export const api = {
     calcularDose: (data) => request('/calculadora/dose-por-peso', 'POST', data),
     converterPercentual: (data) => request('/calculadora/percentual', 'POST', data),
     calcularSuperficie: (data) => request('/calculadora/superficie-corporea', 'POST', data),
+    // Fluidoterapia
+    calcularFluidoterapia: (data) => request('/calculadora/fluidoterapia', 'POST', data),
 
     // Parâmetros
     getTabelasConversao: () => request('/conversao/tabelas', 'GET'),
     getFuncoesVitais: () => request('/parametros/funcoes-vitais', 'GET'),
     getParametrosReprodutivos: () => request('/parametros/reprodutivos', 'GET'),
+    
 };
 

@@ -13,7 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
+import com.vetsystem.api.dto.CalculatorDTO.FluidoterapiaResponse;
+import com.vetsystem.api.dto.CalculatorDTO.FluidoterapiaRequest;
 
 @RestController
 @RequestMapping("/calculadora")
@@ -35,4 +36,10 @@ public class CalculatorController {
     public ResponseEntity<SuperficieCorporeaResponse> calcularSuperficieCorporea (@RequestBody SuperficieCorporeaRequest request){
         return ResponseEntity.ok(calculatorService.calcularSuperficieCorporea(request));
     }
+
+    @PostMapping("/fluidoterapia")
+    public ResponseEntity<FluidoterapiaResponse> calcularFluidoterapia (@RequestBody  FluidoterapiaRequest request){
+        return ResponseEntity.ok(calculatorService.calcularFluidoterapia(request));
+    }
+    
 }

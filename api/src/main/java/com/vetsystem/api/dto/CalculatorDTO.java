@@ -41,4 +41,26 @@ public final class CalculatorDTO {
     public static class SuperficieCorporeaResponse {
         private final BigDecimal m2;
     }
+    
+    // --- DTOs para Fluidoterapia ---
+    @Data
+    public static class FluidoterapiaRequest {
+        private BigDecimal peso;
+        private int percentualDesidratacao;
+        private int taxaManutencao;
+        private int taxaPerdaAdicional;
+    }
+
+    @Data
+    public static class FluidoterapiaResponse {
+        private final BigDecimal volumeReposicao;
+        private final BigDecimal volumeManutencao;
+        private final BigDecimal volumePerdaAdicional;
+        private final BigDecimal volumeTotal24h;
+        private final BigDecimal mlPorHora;
+        private final BigDecimal gotasPorMinutoMicro;
+        private final BigDecimal segundosPorGotaMicro;
+        private final BigDecimal gotasPorMinutoMacro;
+        private final BigDecimal segundosPorGotaMacro;
+    }
 }

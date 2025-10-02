@@ -10,6 +10,8 @@ import com.vetsystem.api.dto.CalculatorDTO.PercentualRequest;
 import com.vetsystem.api.dto.CalculatorDTO.PercentualResponse;
 import com.vetsystem.api.dto.CalculatorDTO.SuperficieCorporeaRequest;
 import com.vetsystem.api.dto.CalculatorDTO.SuperficieCorporeaResponse;
+import com.vetsystem.api.dto.CalculatorDTO.FluidoterapiaRequest;
+import com.vetsystem.api.dto.CalculatorDTO.FluidoterapiaResponse;
 
 import lombok.*;
 
@@ -84,5 +86,49 @@ public class CalculatorService {
 
         // 6. Retorna a resposta encapsulada no DTO
         return new SuperficieCorporeaResponse(m2);
+    }
+
+    public FluidoterapiaResponse calcularFluidoterapia(FluidoterapiaRequest request) {
+        BigDecimal peso = request.getPeso();
+        BigDecimal percentualDesidratacao = new BigDecimal(request.getPercentualDesidratacao());
+        BigDecimal taxaManutencao = new BigDecimal(request.getTaxaManutencao());
+        BigDecimal taxaPerdaAdicional = new BigDecimal(request.getTaxaPerdaAdicional());
+
+        // 1. Cálculo de Reposição (Desidratação)
+        // Formula: Peso (kg) * % Desidratação * 10
+        BigDecimal volumeReposicao = peso.multiply(percentualDesidratacao).multiply(new BigDecimal("10"));
+
+        // 2. Cálculo de Manutenção
+        // Formula: Peso (kg) * Taxa de Manutenção (ml/kg/dia)
+        BigDecimal volumeManutencao = peso.multiply(taxaManutencao);
+
+        // 3. Cálculo de Perdas Adicionais
+        // Formula: Peso (kg) * Taxa de Perda (ml/kg/dia)
+        BigDecimal volumePerdaAdicional = peso.multiply(taxaPerdaAdicional);
+
+        // 4. Volume Total em 24h
+        BigDecimal volumeTotal24h = volumeReposicao.add(volumeManutencao).add(volumePerdaAdicional);
+
+        // 5. Cálculos de Gotejamento
+        BigDecimal mlPorHora = volumeTotal24h.divide(new BigDecimal("24"), 2, RoundingMode.HALF_UP);
+        BigDecimal mlPorMinuto = mlPorHora.divide(new BigDecimal("60"), 2, RoundingMode.HALF_UP);
+        
+        BigDecimal gotasPorMinutoMicro = mlPorMinuto.multiply(new BigDecimal("60"));
+        BigDecimal segundosPorGotaMicro = BigDecimal.ZERO;
+        if (gotasPorMinutoMicro.compareTo(BigDecimal.ZERO) > 0) {
+            segundosPorGotaMicro = new BigDecimal("60").divide(gotasPorMinutoMicro, 2, RoundingMode.HALF_UP);
+        }
+
+        BigDecimal gotasPorMinutoMacro = mlPorMinuto.multiply(new BigDecimal("20"));
+        BigDecimal segundosPorGotaMacro = BigDecimal.ZERO;
+        if (gotasPorMinutoMacro.compareTo(BigDecimal.ZERO) > 0) {
+            segundosPorGotaMacro = new BigDecimal("60").divide(gotasPorMinutoMacro, 2, RoundingMode.HALF_UP);
+        }
+
+        return new FluidoterapiaResponse(
+            volumeReposicao, volumeManutencao, volumePerdaAdicional, volumeTotal24h,
+            mlPorHora, gotasPorMinutoMicro, segundosPorGotaMicro,
+            gotasPorMinutoMacro, segundosPorGotaMacro
+        );
     }
 }
