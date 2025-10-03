@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
     <div id="navbar-placeholder"></div>
 
     <main class="container my-4">
@@ -17,25 +16,55 @@
             <h1><i class="bi bi-table me-2"></i>Parâmetros de Referência</h1>
         </div>
 
+        <!-- SEÇÃO NOVA: Protocolos de Vacinação -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header fw-bold">
+                Protocolos de Vacinação
+            </div>
+            <div class="card-body">
+                <ul class="nav nav-tabs" id="vacinacaoTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="caes-tab" data-bs-toggle="tab" data-bs-target="#caes-pane" type="button" role="tab" aria-controls="caes-pane" aria-selected="true">Cães</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="gatos-tab" data-bs-toggle="tab" data-bs-target="#gatos-pane" type="button" role="tab" aria-controls="gatos-pane" aria-selected="false">Gatos</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="vacinacaoTabContent">
+                    <div class="tab-pane fade show active" id="caes-pane" role="tabpanel" aria-labelledby="caes-tab">
+                        <div class="table-responsive mt-3">
+                            <table class="table table-bordered table-hover text-center align-middle">
+                                <thead class="table-light"><tr><th>Protocolo</th><th>45-60 Dias (2 meses)</th><th>90 Dias (3 meses)</th><th>16 Semanas (4 meses)</th><th>Reforço Anual</th></tr></thead>
+                                <tbody id="tabela-vacinacao-caes-corpo"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="gatos-pane" role="tabpanel" aria-labelledby="gatos-tab">
+                         <div class="table-responsive mt-3">
+                            <table class="table table-bordered table-hover text-center align-middle">
+                                <thead class="table-light"><tr><th>Protocolo</th><th>45-60 Dias (2 meses)</th><th>90 Dias (3 meses)</th><th>16 Semanas (4 meses)</th><th>Reforço Anual</th></tr></thead>
+                                <tbody id="tabela-vacinacao-gatos-corpo"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                 <div class="alert alert-warning mt-3 small">
+                    <strong>Obs:</strong> Para adultos sem histórico, aplicar 2 doses com reforço anual. Se perder a 3ª dose, reiniciar o protocolo.
+                </div>
+            </div>
+        </div>
+
+
         <div class="row g-4">
             <!-- Tabela de Funções Vitais -->
             <div class="col-lg-6">
-                <div class="card shadow-sm h-100">
+                <div class="card shadow-sm">
                     <div class="card-header fw-bold">Funções Vitais</div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover table-bordered text-center">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Parâmetro</th>
-                                        <th>Cães</th>
-                                        <th>Gatos</th>
-                                        <th>Unidade</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tabela-funcoes-vitais-corpo" class="align-middle">
-                                    <!-- Os dados serão inseridos aqui pelo JavaScript -->
-                                </tbody>
+                            <table class="table table-striped table-hover text-center align-middle">
+                                <thead class="table-light"><tr><th>Parâmetro</th><th>Cães</th><th>Gatos</th><th>Unidade</th></tr></thead>
+                                <tbody id="tabela-funcoes-vitais-corpo"></tbody>
                             </table>
                         </div>
                     </div>
@@ -44,56 +73,40 @@
 
             <!-- Tabela de Parâmetros Reprodutivos -->
             <div class="col-lg-6">
-                <div class="card shadow-sm h-100">
+                <div class="card shadow-sm">
                     <div class="card-header fw-bold">Parâmetros Reprodutivos</div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover table-bordered text-center">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Espécie</th>
-                                        <th>Gestação (d)</th>
-                                        <th>Ciclo Estral</th>
-                                        <th>Cio (d)</th>
-                                        <th>Cio Pós-Parto</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tabela-reprodutivos-corpo" class="align-middle">
-                                    <!-- Os dados serão inseridos aqui pelo JavaScript -->
-                                </tbody>
+                            <table class="table table-striped table-hover text-center align-middle">
+                                <thead class="table-light"><tr><th>Espécie</th><th>Gestação (d)</th><th>Ciclo Estral</th><th>Cio (d)</th><th>Cio Pós-Parto</th></tr></thead>
+                                <tbody id="tabela-reprodutivos-corpo"></tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Listas de Conversão -->
-            <div class="col-12">
-                <div class="card shadow-sm">
-                    <div class="card-header fw-bold">Tabelas de Conversão e Medidas</div>
-                    <div class="card-body">
-                        <div class="row g-4">
-                            <div class="col-md-6">
-                                <h5 class="mb-3">Conversões Gerais</h5>
-                                <ul id="lista-conversao-geral" class="list-group">
-                                    <!-- Dados de conversão geral -->
-                                </ul>
-                            </div>
-                            <div class="col-md-6">
-                                <h5 class="mb-3">Medidas Caseiras (ml)</h5>
-                                 <ul id="lista-conversao-medidas" class="list-group">
-                                    <!-- Dados de medidas caseiras -->
-                                </ul>
-                            </div>
-                        </div>
+        <!-- Tabelas de Conversão -->
+        <div class="card shadow-sm mt-4">
+            <div class="card-header fw-bold">Tabelas de Conversão e Medidas</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="text-center">Conversões Gerais</h5>
+                        <ul id="lista-conversao-geral" class="list-group list-group-flush"></ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="text-center">Medidas Caseiras (ml)</h5>
+                        <ul id="lista-conversao-medidas" class="list-group list-group-flush"></ul>
                     </div>
                 </div>
             </div>
         </div>
+
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
     <script src="js/components/menu.js"></script>
     <script type="module" src="js/pages/parametros.js"></script>
 </body>
